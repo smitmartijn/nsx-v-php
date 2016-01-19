@@ -45,13 +45,14 @@ class LogicalSwitch extends \NSX_v_API
    * Create a new Logical Switch
    *
    * @param string $switchName Name for the new Logical Switch
+   * @param string $vdnScopeId Transport Zone identifier on which to create this Logical Switch on
    * @param string $description Optional Logical Switch Description
    * @param string $tenantId Optional Logical Switch Tenant ID
    *
    * @return string|int New logical switch identifier ("virtualwire-XX") or the
    *                    HTTP status error code (if the request fails)
    */
-  public function Create($switchName, $description = "", $tenantId = "")
+  public function Create($switchName, $vdnScopeId = "vdnscope-1", $description = "", $tenantId = "")
   {
     // form XML request for creating a logical switch
     $request_body  = "<virtualWireCreateSpec>";
@@ -60,7 +61,7 @@ class LogicalSwitch extends \NSX_v_API
     $request_body .= "  <tenantId>".$tenantId."</tenantId>";
     $request_body .= "</virtualWireCreateSpec>";
 
-    $result = $this->parent->API_Call("POST", "/api/2.0/vdn/scopes/".$this->parent->vdnScopeId."/virtualwires", $request_body);
+    $result = $this->parent->API_Call("POST", "/api/2.0/vdn/scopes/".$vdnScopeId."/virtualwires", $request_body);
 
     // code 201 == created
     if($result['status'] == 201)

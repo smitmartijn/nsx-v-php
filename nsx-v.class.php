@@ -17,7 +17,6 @@ class NSX_v_API
   protected $class_switch;
 
   protected $scopeId    = "globalroot-0";
-  protected $vdnScopeId = "vdnscope-1";
 
   /**
    * Configure details of NSX Manager (IP/DNS Name, username & password).
