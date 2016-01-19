@@ -45,6 +45,8 @@ class LogicalSwitch extends \NSX_v_API
    * Create a new Logical Switch
    *
    * @param string $switchName Name for the new Logical Switch
+   * @param string $description Optional Logical Switch Description
+   * @param string $tenantId Optional Logical Switch Tenant ID
    *
    * @return string|int New logical switch identifier ("virtualwire-XX") or the
    *                    HTTP status error code (if the request fails)

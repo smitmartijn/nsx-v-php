@@ -3,6 +3,7 @@
 require("nsx-v.controller.class.php");
 require("nsx-v.edge.class.php");
 require("nsx-v.logicalswitch.class.php");
+require("nsx-v.transportzone.class.php");
 
 class NSX_v_API
 {
@@ -10,6 +11,7 @@ class NSX_v_API
   protected $nsx_username;
   protected $nsx_password;
 
+  protected $class_transportzone;
   protected $class_controller;
   protected $class_edge;
   protected $class_switch;
@@ -66,6 +68,18 @@ class NSX_v_API
     if(empty($this->class_switch))
       $this->class_switch = new \NSX_v_API\LogicalSwitch($this);
     return $this->class_switch;
+  }
+
+  /**
+   * Create TransportZone object and return it
+   *
+   * @return object TransportZone class object
+   */
+  public function TransportZone()
+  {
+    if(empty($this->class_transportzone))
+      $this->class_transportzone = new \NSX_v_API\TransportZone($this);
+    return $this->class_transportzone;
   }
 
   /**
