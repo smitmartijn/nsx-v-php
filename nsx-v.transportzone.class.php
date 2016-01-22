@@ -59,7 +59,7 @@ class TransportZone extends \NSX_v_API
     elseif($controlPlaneMode == "unicast")
       $controlMode = "UNICAST_MODE";
     else
-      throw new Exception("Control Plane Mode '".$controlPlaneMode."' not allowed!");
+      throw new \Exception("Control Plane Mode '".$controlPlaneMode."' not allowed!");
 
     // form XML request for creating a logical switch
     $request_body .= "<vdnScope>";
