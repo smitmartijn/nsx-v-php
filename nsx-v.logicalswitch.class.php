@@ -73,14 +73,40 @@ class LogicalSwitch extends \NSX_v_API
   /**
    * Delete a Logical Switch
    *
-   * @param string $switchId Identifier of the logical switch we are deleting
+   * @param string $switchId Identifier or name of the logical switch we are deleting
    *
    * @return int HTTP Status code - 200 == deleted
    */
   public function Delete($switchId)
   {
+    // check param
+    if(empty($switchId))
+      throw new \Exception("Please supply NSX Logical Switch name or ID as parameter.");
+
+    // check whether there's a specific logical switch requested
     if(!preg_match("/^virtualwire\-(\d+)$/", $switchId))
-      throw new \Exception("switchId needs to be in format 'virtualwire-XX'");
+    {
+      // if we're not looking for a specific logical switch or we're looking for a
+      // logical switch based on a name, collect all logical switches
+      $xml_str  = $this->parent->API_Call("GET", "/api/2.0/vdn/virtualwires?pagesize=1000&startindex=0");
+      $array_ls = $this->parent->XML_to_Array($xml_str);
+
+      // if we're looking for a specific edge based on a name, look for
+      // it remember the edge-XX ID for use in the NAT configuration request
+      $found = false;
+      foreach($array_ls['dataPage']['virtualWire'] as $id => $switchInfo)
+      {
+        // match on name and get edge info
+        if($switchInfo['name'] == $switchId) {
+          $switchId = $switchInfo['objectId'];
+          $found  = true;
+          break;
+        }
+      }
+
+      if(!$found)
+        throw new \Exception("NSX Logical Switch \"".$switchId."\" not found!");
+    }
 
     $result = $this->parent->API_Call("DELETE", "/api/2.0/vdn/virtualwires/".$switchId);
 
